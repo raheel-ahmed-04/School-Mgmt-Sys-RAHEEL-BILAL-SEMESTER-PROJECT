@@ -1,0 +1,71 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f1f8f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* Navbar Styles */
+nav {
+    background-color: #388e3c;
+    padding: 10px 20px;
+}
+
+nav a {
+    color: white;
+    margin-right: 20px;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+nav a:hover {
+    color: #a8dadc;
+}
+
+nav .logout-btn {
+    background-color: #FFC107;
+    color: #333;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 20px;
+    font-weight: bold;
+    margin-left: 10px;
+    transition: all 0.3s ease;
+}
+
+nav .logout-btn:hover {
+    background-color: #FFD54F;
+}
+
+/* Green Theme for Headings */
+h2, h4 {
+    color: #388e3c;
+}
+
+.chart-container {
+    max-width: 600px; /* Adjust max width */
+    margin: 0 auto;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+canvas {
+    width: 100% !important; /* Ensures the chart is responsive */
+    height: 400px !important; /* Set a fixed height for normal size */
+}
+
+.table th, .table td {
+    text-align: center;
+}
+
+.table thead {
+    background-color: #388e3c;
+    color: white;
+}
+
+.table-striped tbody tr:nth-child(odd) {
+    background-color: #e6f7f1;
+}

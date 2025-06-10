@@ -1,0 +1,108 @@
+/* Global Styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #eaf1f1;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #388e3c; /* Green navbar */
+    color: #fff;
+    padding: 15px 0;
+    text-align: center;
+}
+
+header nav a {
+    color: #fff;
+    margin: 0 20px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+header nav a:hover {
+    text-decoration: underline;
+}
+
+.container {
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h2 {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: #343a40;
+}
+
+/* Card Layout */
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    margin-top: 20px;
+}
+
+.card {
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+    border-left: 5px solid #388e3c; /* Green border */
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+.card:hover {
+    background-color: #e8f5e9;
+}
+
+.card-header {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #388e3c;
+    margin-bottom: 10px;
+}
+
+.card-body {
+    font-size: 1rem;
+    color: #555;
+}
+
+.room {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.no-lecture {
+    font-weight: bold;
+    color: #dc3545;
+}
+
+.logout-btn {
+    background-color: #FFC107;
+    color: #333;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 20px;
+    font-weight: bold;
+    margin-left: 10px;
+    transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+    background-color: #FFD54F;
+}
+
+/* Modal */
+.modal-header {
+    background-color: #388e3c;
+    color: white;
+}
+
+.modal-body {
+    font-size: 1rem;
+    color: #555;
+}
