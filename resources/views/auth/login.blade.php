@@ -159,12 +159,6 @@
 
             <!-- Login Button -->
             <button type="submit" class="button">Log in</button>
-
-            <div class="form-footer">
-                @if (Route::has('password.request'))
-                    <a class="link" href="{{ route('password.request') }}">Forgot your password?</a>
-                @endif
-            </div>
         </form>
     </div>
 </body>
