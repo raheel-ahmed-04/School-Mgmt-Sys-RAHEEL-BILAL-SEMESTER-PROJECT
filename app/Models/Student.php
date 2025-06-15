@@ -1,28 +1,21 @@
 <?php
 
 namespace App\Models;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
-        'name',           
+        'name',
+        'roll_number',
         'class_id',
-        'roll_number',    
-        'date_of_birth',  
-        'parent_contact', 
+        'date_of_birth',
+        'parent_contact',
     ];
 
     public function class()
     {
-        return $this->belongsTo(Classname::class);
+        return $this->belongsTo(Classname::class, 'class_id');
     }
-    public function attendances()
-    {
-        return $this->hasMany(Attendance::class);
-    }
-
 }

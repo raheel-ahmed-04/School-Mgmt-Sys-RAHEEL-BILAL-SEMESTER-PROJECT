@@ -1,22 +1,23 @@
 <?php
 
 namespace App\Models;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Classname extends Model
 {
-    use HasFactory;
+    protected $fillable = [
+        'name',
+        'teacher_id',
+    ];
 
-    protected $fillable = ['name', 'teacher_id'];
-
-    
     public function teacher()
     {
-        return $this->belongsTo(Teacher::class);
+        return $this->belongsTo(Teacher::class, 'teacher_id');
     }
-    public function class_subject()
+
+    public function students()
     {
-        return $this->hasMany(Class_subject::class, 'class_id');
+        return $this->hasMany(Student::class, 'class_id');
     }
 }

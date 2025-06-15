@@ -7,6 +7,27 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="{{ asset('school/css/admindashboard.css') }}" rel="stylesheet">
+    <style>
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        ul li {
+            background-color: #f8f9fa;
+            margin-bottom: 8px;
+            padding: 12px;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+        ul li:hover {
+            background-color: #e8f5e9;
+        }
+        .icon {
+            margin-right: 8px;
+            font-size: 1.2rem;
+            color: #388e3c;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -18,68 +39,69 @@
                 @csrf
                 <button type="submit" class="logout-btn">Logout</button>
             </form>
-                
         </nav>
     </header>
 
     <main>
-        <div class="welcome-section">
-            <h2>Welcome to the School Management System</h2>
-            <p>
-                Streamline your school’s management processes with ease. Access information about students, teachers, classes, and more in one unified system.
+        <div class="welcome-section" style="max-width:900px;margin:40px auto 0 auto;background:#fff;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.08);padding:32px;">
+            <h2 style="color:#4CAF50;">Welcome to the School Management System</h2>
+            <p style="color:#333;">
+                Streamline your school's management processes with ease. Access information about students, teachers, classes, and more in one unified system.
             </p>
         </div>
 
-        <div class="sections">
-            
-            <div class="section-card">
-                <a href="/admin/subject">
-                    <img src="https://images.pexels.com/photos/4306703/pexels-photo-4306703.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Subject X">
-                    <h3>Subjects</h3>
-                    <p>Manage and assign lessons, exams, and activities for Subject.</p>
-                    Learn More &rarr;
-                </a>
+        <div class="container py-4" style="max-width:900px;margin:32px auto;background:#fff;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.08);padding:32px;">
+            <h2 style="color:#4CAF50;">Admin Dashboard</h2>
+            <div class="row mb-4" style="display:flex;gap:24px;justify-content:space-between;">
+                <div class="card text-center" style="flex:1;background:#f8f9fa;border-radius:10px;box-shadow:0 2px 8px rgba(76,175,80,0.08);padding:24px;border-left:5px solid #4CAF50;margin-bottom:0;">
+                    <div class="card-body">
+                        <h5 class="card-title" style="color:#388e3c;">Total Students</h5>
+                        <p class="card-text display-4" style="font-size:2.2rem;font-weight:bold;">{{ $data['total_students'] }}</p>
+                        <a href="{{ route('admin.student') }}" class="btn btn-primary" style="background:#4CAF50;color:#fff;border:none;padding:8px 18px;border-radius:4px;text-decoration:none;font-weight:500;transition:background 0.2s;">Manage Students</a>
+                    </div>
+                </div>
+                <div class="card text-center" style="flex:1;background:#f8f9fa;border-radius:10px;box-shadow:0 2px 8px rgba(76,175,80,0.08);padding:24px;border-left:5px solid #4CAF50;margin-bottom:0;">
+                    <div class="card-body">
+                        <h5 class="card-title" style="color:#388e3c;">Total Teachers</h5>
+                        <p class="card-text display-4" style="font-size:2.2rem;font-weight:bold;">{{ $data['total_teachers'] }}</p>
+                        <a href="{{ route('admin.teacher') }}" class="btn btn-primary" style="background:#4CAF50;color:#fff;border:none;padding:8px 18px;border-radius:4px;text-decoration:none;font-weight:500;transition:background 0.2s;">Manage Teachers</a>
+                    </div>
+                </div>
+                <div class="card text-center" style="flex:1;background:#f8f9fa;border-radius:10px;box-shadow:0 2px 8px rgba(76,175,80,0.08);padding:24px;border-left:5px solid #4CAF50;margin-bottom:0;">
+                    <div class="card-body">
+                        <h5 class="card-title" style="color:#388e3c;">Total Classes</h5>
+                        <p class="card-text display-4" style="font-size:2.2rem;font-weight:bold;">{{ $data['total_classes'] }}</p>
+                        <a href="{{ route('admin.class') }}" class="btn btn-primary" style="background:#4CAF50;color:#fff;border:none;padding:8px 18px;border-radius:4px;text-decoration:none;font-weight:500;transition:background 0.2s;">Manage Classes</a>
+                    </div>
+                </div>
             </div>
-            <div class="section-card">
-                <a href="/admin/teachers">
-                    <img src="https://images.pexels.com/photos/5212345/pexels-photo-5212345.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Teachers">
-                    <h3>Teachers</h3>
-                    <p>Manage teacher profiles, schedules, and subject assignments.</p>
-                    Learn More &rarr;
-                </a>
-            </div>
-            <div class="section-card">
-                <a href="/admin/class">
-                    <img src="https://images.pexels.com/photos/6693375/pexels-photo-6693375.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Classes">
-                    <h3>Classes</h3>
-                    <p>Organize class schedules, subjects, and timetables efficiently.</p>
-                    Learn More &rarr;
-                </a>
-            </div>
-            <div class="section-card">
-                <a href="/admin/classwisesubject">
-                <img src="https://images.pexels.com/photos/1550337/pexels-photo-1550337.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Class-wise Subjects">
-                    <h3>Class-wise Subjects</h3>
-                    <p>Manage subjects assigned to each class</p>
-                    Learn More &rarr;
-                </a>
-            </div>
-            <div class="section-card">
-                <a href="/admin/student">
-                    <img src="https://images.pexels.com/photos/3184398/pexels-photo-3184398.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Students">
-                    <h3>Students</h3>
-                    <p>Manage student details, attendance, grades, and records.</p>
-                    Learn More &rarr;
-                </a>
-            </div>
-            <div class="section-card">
-                <a href="/admin/timetable">
-                <img src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Time Table">
-                    <h3>Time Table</h3>
-                    <p>View and manage class schedules, teacher assignments, and exam timings.</p>
-                    Learn More &rarr;
-                </a>
-            </div>
+            <h4 style="color:#4CAF50;margin-top:32px;">Recent Students</h4>
+            <ul>
+                @foreach($data['recent_students'] as $student)
+                    <li>
+                        <span class="icon">👨‍🎓</span>
+                        {{ $student->name }} ({{ $student->roll_number }})
+                    </li>
+                @endforeach
+            </ul>
+            <h4 style="color:#4CAF50;">Recent Teachers</h4>
+            <ul>
+                @foreach($data['recent_teachers'] as $teacher)
+                    <li>
+                        <span class="icon">👩‍🏫</span>
+                        {{ $teacher->name }} ({{ $teacher->email }})
+                    </li>
+                @endforeach
+            </ul>
+            <h4 style="color:#4CAF50;">Recent Classes</h4>
+            <ul>
+                @foreach($data['recent_classes'] as $class)
+                    <li>
+                        <span class="icon">📚</span>
+                        {{ $class->name }}
+                    </li>
+                @endforeach
+            </ul>
         </div>
     </main>
 

@@ -1,89 +1,94 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Student;
 use App\Models\Classname;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StudentController extends Controller
 {
     public function index()
     {
-        $students = Student::all();
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
+            return redirect()->route('login');
+        }
+
+        $students = Student::with('class')->get();
         $classes = Classname::all();
-        return view('admin.student', compact('students','classes'));
+        return view('admin.student', compact('students', 'classes'));
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'roll' => 'required|string|max:255|unique:students,roll_number',
-            'class_id' => 'required|exists:classnames,id',
-            'dob' => 'required|date',
-            'parentContact' => 'required|string|max:15',
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
+            return redirect()->route('login');
+        }
 
+        $request->validate([
+            'name' => 'required',
+            'roll_number' => 'required|unique:students',
+            'class_id' => 'required',
+            'date_of_birth' => 'required|date',
+            'parent_contact' => 'required'
         ]);
 
-        try {
-            DB::table('students')->insert([
-                'name' => $validated['name'],
-                'roll_number' => $validated['roll'],
-                'class_id' => $validated['class_id'],
-                'date_of_birth' => $validated['dob'],
-                'parent_contact' => $validated['parentContact'],
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+        $student = new Student();
+        $student->name = $request->name;
+        $student->roll_number = $request->roll_number;
+        $student->class_id = $request->class_id;
+        $student->date_of_birth = $request->date_of_birth;
+        $student->parent_contact = $request->parent_contact;
+        $student->save();
 
-            return redirect()->back()->with('success', 'Student added successfully.');
-        } catch (QueryException $e) {
-            if ($e->getCode() == 23000) {
-                return redirect()->back()->with('error', 'The roll number has already been taken.');
-            }
-            throw $e;
-        }
+        return redirect()->back()->with('success', 'Student added successfully');
     }
 
     public function update(Request $request, $id)
     {
-       
-        $student = Student::findOrFail($id);
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
+            return redirect()->route('login');
+        }
 
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'roll' => 'required|string|max:255|unique:students,roll_number,' . $student->id, 
+        $request->validate([
+            'name' => 'required',
+            'roll_number' => 'required|unique:students,roll_number,' . $id,
             'class_id' => 'required|exists:classnames,id',
-            'dob' => 'required|date',
-            'parentContact' => 'required|string|max:15',
+            'date_of_birth' => 'required|date',
+            'parent_contact' => 'required'
         ]);
 
-        try {
-            $student->update([
-                'name' => $validated['name'],
-                'roll_number' => $validated['roll'],
-                'class_id' => $validated['class_id'],
-                'date_of_birth' => $validated['dob'],
-                'parent_contact' => $validated['parentContact'],
-            ]);
+        $student = Student::findOrFail($id);
+        $student->name = $request->name;
+        $student->roll_number = $request->roll_number;
+        $student->class_id = $request->class_id;
+        $student->date_of_birth = $request->date_of_birth;
+        $student->parent_contact = $request->parent_contact;
+        $student->save();
 
-            return redirect()->back()->with('success', 'Student updated successfully.');
-        } catch (QueryException $e) {
-            if ($e->getCode() == 23000) {
-                return redirect()->back()->with('error', 'The roll number has already been taken.');
-            }
-            throw $e;
-        }
+        return redirect()->route('admin.student')->with('success', 'Student updated successfully');
     }
 
     public function destroy($id)
     {
-        $student = Student::find($id);
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
+            return redirect()->route('login');
+        }
+
+        $student = Student::findOrFail($id);
         $student->delete();
-        return redirect()->back()->with('success', 'Student deleted successfully!');
-       
+
+        return redirect()->back()->with('success', 'Student deleted successfully');
     }
 
-
+    public function edit($id)
+    {
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
+            return redirect()->route('login');
+        }
+        $student = Student::findOrFail($id);
+        $classes = Classname::all();
+        return view('admin.student_edit', compact('student', 'classes'));
+    }
 }

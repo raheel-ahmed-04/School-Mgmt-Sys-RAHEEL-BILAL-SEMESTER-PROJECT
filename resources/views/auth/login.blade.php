@@ -133,7 +133,10 @@
 </head>
 <body>
     <div class="container">
-        <h1>Login</h1>
+        <div style="margin-bottom: 40px;">
+            <a href="{{ route('home') }}" style="background:#4CAF50;color:#fff;padding:10px 22px;border-radius:6px;text-decoration:none;font-weight:500;box-shadow:0 2px 8px rgba(76,175,80,0.08);transition:background 0.2s;">&larr; Back </a>
+        </div>
+        <h1>Admin Login</h1>
         <form method="POST" action="{{ route('login') }}">
             @csrf
 
@@ -151,14 +154,13 @@
                 <div class="error">{{ $errors->first('password') }}</div>
             @endif
 
-            <!-- Remember Me -->
-            <div class="checkbox">
-                <input id="remember_me" type="checkbox" name="remember">
-                <label for="remember_me">Remember me</label>
-            </div>
-
             <!-- Login Button -->
             <button type="submit" class="button">Log in</button>
+
+            <div style="margin-top: 20px; text-align: center;">
+                already have an account?
+                <a href="{{ route('register') }}" class="link">Register</a>
+            </div>
         </form>
     </div>
 </body>

@@ -4,111 +4,90 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Management</title>
-    <link href="{{ asset('school/css/adminstudent.css') }}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Roboto', sans-serif; background: #f8f9fa; margin: 0; }
+        .container { max-width: 900px; margin: 40px auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); padding: 32px; }
+        h2, h3 { color: #4CAF50; margin-bottom: 20px; }
+        form { margin-bottom: 32px; }
+        label { display: block; margin-bottom: 6px; color: #333; font-weight: 500; }
+        input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 16px; font-size: 15px; }
+        button, a.edit-link { background: linear-gradient(90deg, #FFC107, #4CAF50); color: #fff; border: none; padding: 10px 24px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: background 0.2s; text-decoration: none; display: inline-block; }
+        button:hover, a.edit-link:hover { background: linear-gradient(90deg, #4CAF50, #FFC107); }
+        table { width: 100%; border-collapse: collapse; margin-top: 24px; background: #fff; }
+        th, td { padding: 12px 10px; border-bottom: 1px solid #eee; text-align: left; }
+        th { background: #f1f1f1; color: #333; }
+        tr:last-child td { border-bottom: none; }
+        .actions form { display: inline; }
+        .actions button { background: #e53935; color: #fff; padding: 6px 14px; border-radius: 4px; font-size: 13px; margin-left: 4px; }
+        .actions button:hover { background: #b71c1c; }
+        .actions .edit-link { background: #1976d2; color: #fff; padding: 6px 14px; border-radius: 4px; font-size: 13px; margin-right: 4px; }
+        .actions .edit-link:hover { background: #125ea2; }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Student Management System</h1>
-        <nav>
-            <a href="/">Home</a>
-            <a href="{{ url('/admin/dashboard') }}">Dashboard</a>
-            <a href="#" class="add-student-btn" onclick="openAddStudentModal()">Add Student</a>
-            <a href="#" class="logout-btn">Logout</a>
-        </nav>
-    </header>
-    @if (session('success'))
-        <script>
-            window.onload = function () {
-                alert('{{ session('success') }}');
-            };
-        </script>
-    @endif
-    @if ($errors->any())
-        <div style="color: red; font-weight: bold;">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-    <div class="container">
-        <div class="student-list">
-            <h2>Student List</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Roll Number</th>
-                        <th>Class</th>
-                        <th>Date of Birth</th>
-                        <th>Parent Contact</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($students as $student)
-                        <tr>
-                            <td>{{ $student->name }}</td>
-                            <td>{{ $student->roll_number }}</td>
-                            <td>{{ optional($student->class)->name ?? 'N/A'}} </td>
-                            <td>{{ $student->date_of_birth }}</td>
-                            <td>{{ $student->parent_contact }}</td>
-                            <td>
-                                <button class="btn edit" onclick="openEditStudentModal('{{ $student->id }}', {{ json_encode($student) }})">Edit</button>
-                                <form action="{{ route('student.destroy', $student->id) }}" method="POST" style="display: inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn delete">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+<div class="container">
+    <div style="margin-bottom: 24px;">
+        <a href="{{ route('admin.dashboard') }}" style="background:#4CAF50;color:#fff;padding:10px 22px;border-radius:6px;text-decoration:none;font-weight:500;box-shadow:0 2px 8px rgba(76,175,80,0.08);transition:background 0.2s;">&larr; Back to Dashboard</a>
     </div>
-
-    <!-- Modal -->
-    <div class="modal" id="studentModal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h2 id="modalTitle" style="text-align: center;">Add Student</h2>
-            <form id="studentForm" method="POST">
-                @csrf
-                <input type="hidden" id="_method" name="_method" value="POST">
-                <div class="form-group">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="roll">Roll Number:</label>
-                    <input type="text" id="roll" name="roll" required>
-                </div>
-                <div class="form-group">
-                    <label for="class_id">Class:</label>
-                    <select id="class_id" name="class_id" required>
-                        <option value="" disabled selected>Select a Class</option>
-                        @foreach($classes as $class)
-                            <option value="{{ $class->id }}">{{ $class->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="dob">Date of Birth:</label>
-                    <input type="date" id="dob" name="dob" required>
-                </div>
-                <div class="form-group">
-                    <label for="parentContact">Parent Contact:</label>
-                    <input type="text" id="parentContact" name="parentContact" required>
-                </div>
-                <div style="text-align: center;">
-                    <button type="submit" class="btn primary">Save</button>
-                </div>
-            </form>
-        </div>
+    <h2>Student Management</h2>
+    @if(session('success'))
+    <div style="background:#e6ffed;color:#256029;padding:12px 20px;border-radius:6px;margin-bottom:20px;border:1px solid #b7ebc6;">
+        {{ session('success') }}
     </div>
-
-    <script src="{{ asset('school/js/adminstudent.js') }}"></script>
+    @endif
+    <form method="POST" action="{{ route('student.store') }}">
+        @csrf
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+        <label for="roll_number">Roll Number</label>
+        <input type="text" id="roll_number" name="roll_number" required>
+        <label for="class_id">Class</label>
+        <select id="class_id" name="class_id">
+            @foreach($classes as $class)
+                <option value="{{ $class->id }}">{{ $class->name }}</option>
+            @endforeach
+        </select>
+        <label for="date_of_birth">Date of Birth</label>
+        <input type="date" id="date_of_birth" name="date_of_birth" required>
+        <label for="parent_contact">Parent Contact</label>
+        <input type="text" id="parent_contact" name="parent_contact" required>
+        <button type="submit">Add Student</button>
+    </form>
+    <h3>All Students</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Roll Number</th>
+                <th>Class</th>
+                <th>Date of Birth</th>
+                <th>Parent Contact</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($students as $student)
+            <tr>
+                <td>{{ $student->name }}</td>
+                <td>{{ $student->roll_number }}</td>
+                <td>{{ $student->class ? $student->class->name : 'None' }}</td>
+                <td>{{ $student->date_of_birth }}</td>
+                <td>{{ $student->parent_contact }}</td>
+                <td class="actions">
+                    <a href="{{ route('student.edit', $student->id) }}" class="edit-link">Edit</a>
+                    <form method="POST" action="{{ route('student.destroy', $student->id) }}" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            @empty
+            <tr><td colspan="6" style="text-align:center;color:#aaa;">No students found.</td></tr>
+            @endforelse
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

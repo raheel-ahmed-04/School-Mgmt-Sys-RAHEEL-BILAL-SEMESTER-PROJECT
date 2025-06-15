@@ -6,13 +6,13 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    
     public function up(): void
     {
         Schema::create('classnames', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->foreignId('teacher_id')->nullable()->constrained('teachers')->onDelete('set null');
+            $table->string('name');
+            $table->unsignedBigInteger('teacher_id')->nullable();
+            $table->foreign('teacher_id')->references('id')->on('teachers')->onDelete('cascade');
             $table->timestamps();
         });
     }

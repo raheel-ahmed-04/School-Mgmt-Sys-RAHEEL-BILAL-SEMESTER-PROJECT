@@ -1,82 +1,90 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Classname;
 use App\Models\Teacher;
 use App\Models\Student;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ClassController extends Controller
 {
     public function index()
     {
-        $classes = Classname::all();
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
+            return redirect()->route('login');
+        }
+        $classes = Classname::with(['teacher', 'students'])->get();
         $teachers = Teacher::all();
-        $std = Student::all();
-        return view('admin.classname', compact('classes','teachers','std'));
+        return view('admin.class', compact('classes', 'teachers'));
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:classnames,name',
-            'teacher_id' => 'required|exists:teachers,id',
-            
-        ]);
-
-        try {
-            DB::table('classnames')->insert([
-                'name' => $validated['name'],
-                'teacher_id' => $validated['teacher_id'],
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-            return redirect()->back()->with('success', 'Class added successfully.');
-        } catch (QueryException $e) {
-            if ($e->getCode() == 23000) {
-                $errorMessage = 'The class name has already been taken.';
-                return redirect()->back()->with('error', $errorMessage);
-            }
-            throw $e;
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
+            return redirect()->route('login');
         }
+        $request->validate([
+            'name' => 'required|unique:classnames',
+            'teacher_id' => 'nullable|exists:teachers,id',
+        ]);
+        $class = new Classname();
+        $class->name = $request->name;
+        $class->teacher_id = $request->teacher_id;
+        $class->save();
+        return redirect()->back()->with('success', 'Class created successfully');
     }
 
     public function update(Request $request, $id)
     {
-      
-        $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:classnames,name,' . $id, 
-            'teacher_id' => 'required|exists:teachers,id',
-            
-        ]);
-
-        try {
-            
-            $class = DB::table('classnames')->where('id', $id)->first();
-
-            DB::table('classnames')->where('id', $id)->update([
-                'name' => $validated['name'],
-                'teacher_id' => $validated['teacher_id'],
-                
-            ]);
-
-            return redirect()->back()->with('success', 'Class updated successfully.');
-        } catch (QueryException $e) {
-            if ($e->getCode() == 23000) {
-                $errorMessage = 'The class name has already been taken.';
-                return redirect()->back()->with('error', $errorMessage);
-            }
-            throw $e;
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
+            return redirect()->route('login');
         }
+        $request->validate([
+            'name' => 'required|unique:classnames,name,'.$id,
+            'teacher_id' => 'nullable|exists:teachers,id',
+        ]);
+        $class = Classname::findOrFail($id);
+        $class->name = $request->name;
+        $class->teacher_id = $request->teacher_id;
+        $class->save();
+        return redirect()->route('admin.class')->with('success', 'Class updated successfully');
     }
+
     public function destroy($id)
     {
-        $class = Classname::find($id);
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
+            return redirect()->route('login');
+        }
+        $class = Classname::findOrFail($id);
+        // Optionally, unassign students from this class
+        Student::where('class_id', $id)->update(['class_id' => null]);
         $class->delete();
-        return redirect()->back()->with('success', 'Class deleted successfully!');
-        
+        return redirect()->back()->with('success', 'Class deleted successfully');
     }
 
+    public function assignStudent(Request $request, $class_id)
+    {
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
+            return redirect()->route('login');
+        }
+        $request->validate([
+            'student_id' => 'required|exists:students,id',
+        ]);
+        $student = Student::findOrFail($request->student_id);
+        $student->class_id = $class_id;
+        $student->save();
+        return redirect()->back()->with('success', 'Student assigned to class');
+    }
 
+    public function edit($id)
+    {
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
+            return redirect()->route('login');
+        }
+        $class = Classname::findOrFail($id);
+        $teachers = Teacher::all();
+        return view('admin.class_edit', compact('class', 'teachers'));
+    }
 }

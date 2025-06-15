@@ -3,80 +3,90 @@
 namespace App\Http\Controllers;
 
 use App\Models\Teacher;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Auth;
 
 class TeacherController extends Controller
 {
-
     public function index()
     {
-        $teachers = Teacher::all();
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
+            return redirect()->route('login');
+        }
+
+        $teachers = Teacher::with('classes')->get();
         return view('admin.teacher', compact('teachers'));
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:teachers,email',
-            'subject_expertise' => 'required|string|max:255',
-            'contact_number' => 'required|string|max:15',
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
+            return redirect()->route('login');
+        }
+
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:teachers',
+            'expertise' => 'required',
+            'contact_number' => 'required'
         ]);
 
-        try {
-            DB::table('teachers')->insert([
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'subject_expertise' => $validated['subject_expertise'],
-                'contact_number' => $validated['contact_number'],
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+        $teacher = new Teacher();
+        $teacher->name = $request->name;
+        $teacher->email = $request->email;
+        $teacher->subject_expertise = $request->expertise;
+        $teacher->contact_number = $request->contact_number;
+        $teacher->save();
 
-            return redirect()->back()->with('success', 'Teacher added successfully.');
-        } catch (QueryException $e) {
-            if ($e->getCode() == 23000) {
-                return redirect()->back()->with('error', 'The email has already been taken.');
-            }
-            throw $e;
-        }
+        return redirect()->back()->with('success', 'Teacher added successfully');
     }
 
     public function update(Request $request, $id)
     {
-        $teacher = Teacher::findOrFail($id);
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
+            return redirect()->route('login');
+        }
 
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:teachers,email,' . $teacher->id, 
-            'subject_expertise' => 'required|string|max:255',
-            'contact_number' => 'required|string|max:15',
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:teachers,email,'.$id,
+            'expertise' => 'required',
+            'contact_number' => 'required'
         ]);
 
-        try {
-            $teacher->update([
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'subject_expertise' => $validated['subject_expertise'],
-                'contact_number' => $validated['contact_number'],
-            ]);
+        $teacher = Teacher::findOrFail($id);
+        $teacher->name = $request->name;
+        $teacher->email = $request->email;
+        $teacher->subject_expertise = $request->expertise;
+        $teacher->contact_number = $request->contact_number;
+        $teacher->save();
 
-            return redirect()->back()->with('success', 'Teacher updated successfully.');
-        } catch (QueryException $e) {
-            if ($e->getCode() == 23000) {
-                return redirect()->back()->with('error', 'The email has already been taken.');
-            }
-            throw $e;
-        }
+        return redirect()->route('admin.teacher')->with('success', 'Teacher updated successfully');
     }
 
     public function destroy($id)
     {
-        $teacher = Teacher::find($id);
-        $teacher->delete();
-        return redirect()->back()->with('success', 'Teacher deleted successfully!');
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
+            return redirect()->route('login');
+        }
+
+        $teacher = Teacher::findOrFail($id);
         
+        // Check if teacher has assigned classes
+        if ($teacher->classes()->count() > 0) {
+            return redirect()->back()->with('error', 'Cannot delete teacher with assigned classes');
+        }
+
+        $teacher->delete();
+        return redirect()->back()->with('success', 'Teacher deleted successfully');
+    }
+
+    public function edit($id)
+    {
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
+            return redirect()->route('login');
+        }
+        $teacher = Teacher::findOrFail($id);
+        return view('admin.teacher_edit', compact('teacher'));
     }
 }
