@@ -19,24 +19,24 @@ Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('adm
 
 // Student Management
 Route::get('/admin/student', [StudentController::class, 'index'])->name('admin.student');
-Route::get('/student/edit/{id}', [StudentController::class, 'edit'])->name('student.edit');
+Route::post('/student/edit', [StudentController::class, 'edit'])->name('student.edit');
 Route::post('/student/store', [StudentController::class, 'store'])->name('student.store');
-Route::put('/student/update/{id}', [StudentController::class, 'update'])->name('student.update');
-Route::delete('/student/destroy/{id}', [StudentController::class, 'destroy'])->name('student.destroy');
+Route::post('/student/update', [StudentController::class, 'update'])->name('student.update');
+Route::post('/student/destroy', [StudentController::class, 'destroy'])->name('student.destroy');
 
 // Teacher Management
 Route::get('/admin/teacher', [TeacherController::class, 'index'])->name('admin.teacher');
-Route::get('/teacher/edit/{id}', [TeacherController::class, 'edit'])->name('teacher.edit');
+Route::post('/teacher/edit', [TeacherController::class, 'edit'])->name('teacher.edit');
 Route::post('/teacher/store', [TeacherController::class, 'store'])->name('teacher.store');
-Route::put('/teacher/update/{id}', [TeacherController::class, 'update'])->name('teacher.update');
-Route::delete('/teacher/destroy/{id}', [TeacherController::class, 'destroy'])->name('teacher.destroy');
+Route::post('/teacher/update', [TeacherController::class, 'update'])->name('teacher.update');
+Route::post('/teacher/destroy', [TeacherController::class, 'destroy'])->name('teacher.destroy');
 
 // Class Management
 Route::get('/admin/class', [ClassController::class, 'index'])->name('admin.class');
-Route::get('/class/edit/{id}', [ClassController::class, 'edit'])->name('class.edit');
+Route::post('/class/edit', [ClassController::class, 'edit'])->name('class.edit');
 Route::post('/class/store', [ClassController::class, 'store'])->name('class.store');
-Route::put('/class/update/{id}', [ClassController::class, 'update'])->name('class.update');
-Route::delete('/class/destroy/{id}', [ClassController::class, 'destroy'])->name('class.destroy');
+Route::post('/class/update', [ClassController::class, 'update'])->name('class.update');
+Route::post('/class/destroy', [ClassController::class, 'destroy'])->name('class.destroy');
 Route::post('/class/assign-student/{class_id}', [ClassController::class, 'assignStudent'])->name('class.assignStudent');
 
 // Auth routes (handled by AdminController)

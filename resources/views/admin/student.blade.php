@@ -11,18 +11,41 @@
         h2, h3 { color: #4CAF50; margin-bottom: 20px; }
         form { margin-bottom: 32px; }
         label { display: block; margin-bottom: 6px; color: #333; font-weight: 500; }
-        input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 16px; font-size: 15px; }
-        button, a.edit-link { background: linear-gradient(90deg, #FFC107, #4CAF50); color: #fff; border: none; padding: 10px 24px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: background 0.2s; text-decoration: none; display: inline-block; }
-        button:hover, a.edit-link:hover { background: linear-gradient(90deg, #4CAF50, #FFC107); }
+        input, select {
+             width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 16px; font-size: 15px; }
+        .edit-link, .delete-btn {
+            border: none;
+            padding: 6px 18px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin: 0 2px;
+        }
+        .edit-link {
+            background: #1976d2;
+            color: #fff;
+        }
+        .edit-link:hover {
+            background: #125ea2;
+        }
+        .delete-btn {
+            background: #e53935;
+            color: #fff;
+        }
+        .delete-btn:hover {
+            background: #b71c1c;
+        }
+        
+        button{ background: linear-gradient(90deg, #FFC107, #4CAF50); color: #fff; border: none; padding: 10px 24px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: background 0.2s; text-decoration: none; display: inline-block; }
+        button:hover { background: linear-gradient(90deg, #4CAF50, #FFC107); }
+
         table { width: 100%; border-collapse: collapse; margin-top: 24px; background: #fff; }
         th, td { padding: 12px 10px; border-bottom: 1px solid #eee; text-align: left; }
         th { background: #f1f1f1; color: #333; }
         tr:last-child td { border-bottom: none; }
         .actions form { display: inline; }
-        .actions button { background: #e53935; color: #fff; padding: 6px 14px; border-radius: 4px; font-size: 13px; margin-left: 4px; }
-        .actions button:hover { background: #b71c1c; }
-        .actions .edit-link { background: #1976d2; color: #fff; padding: 6px 14px; border-radius: 4px; font-size: 13px; margin-right: 4px; }
-        .actions .edit-link:hover { background: #125ea2; }
     </style>
 </head>
 <body>
@@ -63,29 +86,36 @@
                 <th>Class</th>
                 <th>Date of Birth</th>
                 <th>Parent Contact</th>
-                <th>Actions</th>
+                <th colspan="2">Actions</th>
             </tr>
         </thead>
         <tbody>
-            @forelse($students as $student)
+            @foreach($students as $student)
             <tr>
                 <td>{{ $student->name }}</td>
                 <td>{{ $student->roll_number }}</td>
-                <td>{{ $student->class ? $student->class->name : 'None' }}</td>
+                <td>{{ $student->class->name}}</td>
                 <td>{{ $student->date_of_birth }}</td>
                 <td>{{ $student->parent_contact }}</td>
                 <td class="actions">
-                    <a href="{{ route('student.edit', $student->id) }}" class="edit-link">Edit</a>
-                    <form method="POST" action="{{ route('student.destroy', $student->id) }}" style="display:inline;">
+                    <form action="{{ route('student.edit') }}" method="POST" style="display:inline;">
                         @csrf
-                        @method('DELETE')
-                        <button type="submit">Delete</button>
+                        <input type="hidden" name="id" value="{{ $student->id }}">
+                        <input type="submit" value="Edit" class="edit-link">
+                    </form>
+                </td>
+                <td class="actions">
+                    <form method="POST" action="{{ route('student.destroy') }}" style="display:inline;">
+                        @csrf
+                        <input type="hidden" name="id" value="{{ $student->id }}">
+                        <input type="submit" value="Delete" class="delete-btn">
                     </form>
                 </td>
             </tr>
-            @empty
-            <tr><td colspan="6" style="text-align:center;color:#aaa;">No students found.</td></tr>
-            @endforelse
+            @endforeach
+            @if(count($students) == 0)
+            <tr><td colspan="7" style="text-align:center;color:#aaa;">No students found.</td></tr>
+            @endif
         </tbody>
     </table>
 </div>

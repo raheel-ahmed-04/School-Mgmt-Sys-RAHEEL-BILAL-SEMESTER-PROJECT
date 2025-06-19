@@ -54,28 +54,33 @@
                 <th>Email</th>
                 <th>Expertise</th>
                 <th>Contact Number</th>
-                <th>Actions</th>
+                <th colspan="2">Actions</th>
             </tr>
         </thead>
         <tbody>
-            @forelse($teachers as $teacher)
+            @foreach($teachers as $teacher)
             <tr>
                 <td>{{ $teacher->name }}</td>
                 <td>{{ $teacher->email }}</td>
                 <td>{{ $teacher->subject_expertise }}</td>
                 <td>{{ $teacher->contact_number }}</td>
                 <td class="actions">
-                    <a href="{{ route('teacher.edit', $teacher->id) }}" class="edit-link">Edit</a>
-                    <form method="POST" action="{{ route('teacher.destroy', $teacher->id) }}" style="display:inline;">
+                    <form action="{{ route('teacher.edit') }}" method="POST" style="display:inline;">
                         @csrf
-                        @method('DELETE')
-                        <button type="submit">Delete</button>
+                        <input type="hidden" name="id" value="{{ $teacher->id }}">
+                        <input type="submit" value="Edit" class="edit-link">
+                    </form>
+                    <form method="POST" action="{{ route('teacher.destroy') }}" style="display:inline;">
+                        @csrf
+                        <input type="hidden" name="id" value="{{ $teacher->id }}">
+                        <input type="submit" value="Delete" style="background:#e53935;color:#fff;padding:6px 14px;border-radius:4px;font-size:13px;margin-left:4px;border:none;cursor:pointer;">
                     </form>
                 </td>
             </tr>
-            @empty
+            @endforeach
+            @if(count($teachers) == 0)
             <tr><td colspan="5" style="text-align:center;color:#aaa;">No teachers found.</td></tr>
-            @endforelse
+            @endif
         </tbody>
     </table>
 </div>

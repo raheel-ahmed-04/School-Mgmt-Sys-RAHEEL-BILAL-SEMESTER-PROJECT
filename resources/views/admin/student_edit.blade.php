@@ -21,9 +21,9 @@
 <body>
 <div class="container">
     <h2>Edit Student</h2>
-    <form method="POST" action="{{ route('student.update', $student->id) }}">
+    <form method="POST" action="{{ route('student.update') }}">
         @csrf
-        @method('PUT')
+        <input type="hidden" name="id" value="{{ $student->id }}">
         <label for="name">Name</label>
         <input type="text" id="name" name="name" value="{{ $student->name }}" required>
         <label for="roll_number">Roll Number</label>
@@ -31,7 +31,7 @@
         <label for="class_id">Class</label>
         <select id="class_id" name="class_id">
             @foreach($classes as $class)
-                <option value="{{ $class->id }}" {{ $student->class_id == $class->id ? 'selected' : '' }}>{{ $class->name }}</option>
+                <option value="{{ $class->id }}" @if($student->class_id == $class->id) selected @endif>{{ $class->name }}</option>
             @endforeach
         </select>
         <label for="date_of_birth">Date of Birth</label>

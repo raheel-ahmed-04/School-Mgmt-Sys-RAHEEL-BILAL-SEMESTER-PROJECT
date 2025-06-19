@@ -36,30 +36,32 @@ class ClassController extends Controller
         return redirect()->back()->with('success', 'Class created successfully');
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         if (!Auth::check() || Auth::user()->role !== 'admin') {
             return redirect()->route('login');
         }
         $request->validate([
-            'name' => 'required|unique:classnames,name,'.$id,
+            'id' => 'required|exists:classnames,id',
+            'name' => 'required|unique:classnames,name,' . $request->id,
             'teacher_id' => 'nullable|exists:teachers,id',
         ]);
-        $class = Classname::findOrFail($id);
+        $class = Classname::findOrFail($request->id);
         $class->name = $request->name;
         $class->teacher_id = $request->teacher_id;
         $class->save();
         return redirect()->route('admin.class')->with('success', 'Class updated successfully');
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
         if (!Auth::check() || Auth::user()->role !== 'admin') {
             return redirect()->route('login');
         }
-        $class = Classname::findOrFail($id);
+        $request->validate(['id' => 'required|exists:classnames,id']);
+        $class = Classname::findOrFail($request->id);
         // Optionally, unassign students from this class
-        Student::where('class_id', $id)->update(['class_id' => null]);
+        \App\Models\Student::where('class_id', $request->id)->update(['class_id' => null]);
         $class->delete();
         return redirect()->back()->with('success', 'Class deleted successfully');
     }
@@ -78,11 +80,12 @@ class ClassController extends Controller
         return redirect()->back()->with('success', 'Student assigned to class');
     }
 
-    public function edit($id)
+    public function edit(Request $request)
     {
         if (!Auth::check() || Auth::user()->role !== 'admin') {
             return redirect()->route('login');
         }
+        $id = $request->id;
         $class = Classname::findOrFail($id);
         $teachers = Teacher::all();
         return view('admin.class_edit', compact('class', 'teachers'));

@@ -21,9 +21,9 @@
 <div class="container">
     <a href="{{ route('admin.teacher') }}" class="back-link">&larr; Back to Teachers</a>
     <h2>Edit Teacher</h2>
-    <form method="POST" action="{{ route('teacher.update', $teacher->id) }}">
+    <form method="POST" action="{{ route('teacher.update') }}">
         @csrf
-        @method('PUT')
+        <input type="hidden" name="id" value="{{ $teacher->id }}">
         <label for="name">Name</label>
         <input type="text" id="name" name="name" value="{{ $teacher->name }}" required>
         <label for="email">Email</label>
