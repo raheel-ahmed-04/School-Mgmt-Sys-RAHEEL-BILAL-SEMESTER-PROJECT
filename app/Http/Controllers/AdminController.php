@@ -22,9 +22,9 @@ class AdminController extends Controller
             'total_students' => Student::count(),
             'total_teachers' => Teacher::count(),
             'total_classes' => Classname::count(),
-            'recent_students' => Student::latest()->take(5)->get(),
-            'recent_teachers' => Teacher::latest()->take(5)->get(),
-            'recent_classes' => Classname::latest()->take(5)->get(),
+            'recent_students' => Student::latest()->take(3)->get(),
+            'recent_teachers' => Teacher::latest()->take(3)->get(),
+            'recent_classes' => Classname::latest()->take(3)->get(),
         ];
 
         return view('admin.dashboard', compact('data'));
@@ -58,6 +58,9 @@ class AdminController extends Controller
 
     public function register(Request $request)
     {
+        // if (!Auth::check()) {
+        //     return redirect()->route('login');
+        // }
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users',
@@ -68,7 +71,6 @@ class AdminController extends Controller
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->save();
-        Auth::login($user);
-        return redirect()->route('admin.dashboard');
+        return redirect()->route('login');
     }
 }

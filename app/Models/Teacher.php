@@ -13,8 +13,8 @@ class Teacher extends Model
         'contact_number',
     ];
 
-    public function classes()
+    public function class()
     {
-        return $this->hasMany(Classname::class);
+        return $this->belongsTo(Classname::class);
     }
 }

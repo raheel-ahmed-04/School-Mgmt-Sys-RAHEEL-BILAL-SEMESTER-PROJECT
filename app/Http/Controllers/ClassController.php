@@ -30,8 +30,14 @@ class ClassController extends Controller
         ]);
         $class = new Classname();
         $class->name = $request->name;
-        $class->teacher_id = $request->teacher_id;
         $class->save();
+        if ($request->teacher_id) {
+            $teacher = Teacher::find($request->teacher_id);
+            if ($teacher) {
+                $teacher->class_id = $class->id;
+                $teacher->save();
+            }
+        }
         return redirect()->back()->with('success', 'Class created successfully');
     }
 
@@ -43,8 +49,21 @@ class ClassController extends Controller
         $class = Classname::find($request->id);
         if ($class) {
             $class->name = $request->name;
-            $class->teacher_id = $request->teacher_id;
             $class->save();
+            // Remove class_id from any teacher previously assigned to this class
+            $oldTeacher = $class->teacher;
+            if ($oldTeacher) {
+                $oldTeacher->class_id = null;
+                $oldTeacher->save();
+            }
+            // Assign new teacher
+            if ($request->teacher_id) {
+                $teacher = Teacher::find($request->teacher_id);
+                if ($teacher) {
+                    $teacher->class_id = $class->id;
+                    $teacher->save();
+                }
+            }
             return redirect()->route('admin.class')->with('success', 'Class updated successfully');
         } else {
             return redirect()->route('admin.class')->with('error', 'Class not found');
@@ -62,24 +81,6 @@ class ClassController extends Controller
             return redirect()->back()->with('success', 'Class deleted successfully');
         } else {
             return redirect()->route('admin.class')->with('error', 'Class not found');
-        }
-    }
-
-    public function assignStudent(Request $request, $class_id)
-    {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-        $request->validate([
-            'student_id' => 'required',
-        ]);
-        $student = Student::find($request->student_id);
-        if ($student) {
-            $student->class_id = $class_id;
-            $student->save();
-            return redirect()->back()->with('success', 'Student assigned to class');
-        } else {
-            return redirect()->back()->with('error', 'Student not found');
         }
     }
 

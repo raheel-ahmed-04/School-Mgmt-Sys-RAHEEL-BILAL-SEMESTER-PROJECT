@@ -37,7 +37,6 @@ Route::post('/class/edit', [ClassController::class, 'edit'])->name('class.edit')
 Route::post('/class/store', [ClassController::class, 'store'])->name('class.store');
 Route::post('/class/update', [ClassController::class, 'update'])->name('class.update');
 Route::post('/class/destroy', [ClassController::class, 'destroy'])->name('class.destroy');
-Route::post('/class/assign-student/{class_id}', [ClassController::class, 'assignStudent'])->name('class.assignStudent');
 
 // Auth routes (handled by AdminController)
 Route::get('/login', [AdminController::class, 'showLogin'])->name('login');

@@ -7,13 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Classname extends Model
 {
     protected $fillable = [
-        'name',
-        'teacher_id',
+        'name'
     ];
 
     public function teacher()
     {
-        return $this->belongsTo(Teacher::class, 'teacher_id');
+        return $this->hasOne(Teacher::class, 'class_id');
     }
 
     public function students()
