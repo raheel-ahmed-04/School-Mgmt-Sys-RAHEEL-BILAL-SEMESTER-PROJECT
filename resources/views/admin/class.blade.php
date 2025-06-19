@@ -80,7 +80,7 @@
         @csrf
         <label for="name">Class Name</label>
         <input type="text" id="name" name="name" required>
-        <label for="teacher_id">Assign Teacher</label>
+        <label for="teacher_id">Assign Class Teacher</label>
         <select id="teacher_id" name="teacher_id">
             <option value="">-- None --</option>
             @foreach($teachers as $teacher)
@@ -96,7 +96,7 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Assigned Teacher</th>
+                <th>Assigned Class Teacher</th>
                 <th>Students</th>
                 <th colspan="2">Actions</th>
             </tr>

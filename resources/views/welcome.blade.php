@@ -75,15 +75,6 @@
                        onmouseout="this.style.backgroundColor='#FFC107';">
                        Login
                     </a>
-                    
-                    @if (Route::has('register'))
-                        <a href="{{ route('register') }}"
-                           style="background-color: #FFC107; color: #333; padding: 10px 20px; text-decoration: none; border-radius: 20px; font-weight: bold; margin-left: 10px; transition: all 0.3s ease;"
-                           onmouseover="this.style.backgroundColor='#FFD54F';" 
-                           onmouseout="this.style.backgroundColor='#FFC107';">
-                           Register
-                        </a>
-                    @endif
                 @endauth
             @endif
         </nav>

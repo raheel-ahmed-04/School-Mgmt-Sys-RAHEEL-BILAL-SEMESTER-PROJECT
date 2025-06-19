@@ -10,7 +10,7 @@ class TeacherController extends Controller
 {
     public function index()
     {
-        if (!Auth::check() || Auth::user()->role !== 'admin') {
+        if (!Auth::check()) {
             return redirect()->route('login');
         }
 
@@ -20,7 +20,7 @@ class TeacherController extends Controller
 
     public function store(Request $request)
     {
-        if (!Auth::check() || Auth::user()->role !== 'admin') {
+        if (!Auth::check()) {
             return redirect()->route('login');
         }
         $request->validate([
@@ -40,7 +40,7 @@ class TeacherController extends Controller
 
     public function update(Request $request)
     {
-        if (!Auth::check() || Auth::user()->role !== 'admin') {
+        if (!Auth::check()) {
             return redirect()->route('login');
         }
         $request->validate([
@@ -65,7 +65,7 @@ class TeacherController extends Controller
 
     public function destroy(Request $request)
     {
-        if (!Auth::check() || Auth::user()->role !== 'admin') {
+        if (!Auth::check()) {
             return redirect()->route('login');
         }
         $teacher = Teacher::find($request->id);
@@ -82,7 +82,7 @@ class TeacherController extends Controller
 
     public function edit(Request $request)
     {
-        if (!Auth::check() || Auth::user()->role !== 'admin') {
+        if (!Auth::check()) {
             return redirect()->route('login');
         }
         $id = $request->id;

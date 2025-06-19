@@ -26,7 +26,7 @@
         <input type="hidden" name="id" value="{{ $class->id }}">
         <label for="name">Class Name</label>
         <input type="text" id="name" name="name" value="{{ $class->name }}" required>
-        <label for="teacher_id">Assign Teacher</label>
+        <label for="teacher_id">Assigned Class Teacher</label>
         <select id="teacher_id" name="teacher_id">
             <option value="">-- None --</option>
             @foreach($teachers as $teacher)

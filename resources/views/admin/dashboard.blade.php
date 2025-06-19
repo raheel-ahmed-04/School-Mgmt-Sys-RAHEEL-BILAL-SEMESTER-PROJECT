@@ -27,6 +27,19 @@
             font-size: 1.2rem;
             color: #388e3c;
         }
+        .btn-register {
+            background: #1976d2;
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            margin-left: 10px;
+            transition: background 0.2s;
+        }
+        .btn-register:hover {
+            background: #125ea2;
+        }
     </style>
 </head>
 <body>
@@ -34,7 +47,10 @@
         <h1>School Management System</h1>
         <nav>
             <a href="/">Home</a>
-            <a href="{{ url('/admin/dashboard') }}">Dashboard</a>       
+            <a href="{{ url('/admin/dashboard') }}">Dashboard</a>
+            @if(Auth::check())
+                <a href="{{ route('register') }}" class="btn-register">Register New Admin</a>
+            @endif
             <form method="POST" action="{{ route('logout') }}" style="display:inline;">
                 @csrf
                 <button type="submit" class="logout-btn">Logout</button>

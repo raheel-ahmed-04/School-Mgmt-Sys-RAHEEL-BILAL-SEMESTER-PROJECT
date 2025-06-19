@@ -14,7 +14,7 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        if (!Auth::check() || Auth::user()->role !== 'admin') {
+        if (!Auth::check()) {
             return redirect()->route('login');
         }
 
@@ -68,7 +68,6 @@ class AdminController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
-        $user->role = 'admin'; // or allow selection if needed
         $user->save();
         Auth::login($user);
         return redirect()->route('admin.dashboard');

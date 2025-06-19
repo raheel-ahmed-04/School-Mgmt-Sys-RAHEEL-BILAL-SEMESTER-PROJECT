@@ -11,7 +11,7 @@ class StudentController extends Controller
 {
     public function index()
     {
-        if (!Auth::check() || Auth::user()->role !== 'admin') {
+        if (!Auth::check()) {
             return redirect()->route('login');
         }
 
@@ -22,7 +22,7 @@ class StudentController extends Controller
 
     public function store(Request $request)
     {
-        if (!Auth::check() || Auth::user()->role !== 'admin') {
+        if (!Auth::check()) {
             return redirect()->route('login');
         }
         $request->validate([
@@ -44,7 +44,7 @@ class StudentController extends Controller
 
     public function update(Request $request)
     {
-        if (!Auth::check() || Auth::user()->role !== 'admin') {
+        if (!Auth::check()) {
             return redirect()->route('login');
         }
         $request->validate([
@@ -71,7 +71,7 @@ class StudentController extends Controller
 
     public function destroy(Request $request)
     {
-        if (!Auth::check() || Auth::user()->role !== 'admin') {
+        if (!Auth::check()) {
             return redirect()->route('login');
         }
         $student = Student::find($request->id);
@@ -85,7 +85,7 @@ class StudentController extends Controller
 
     public function edit(Request $request)
     {
-        if (!Auth::check() || Auth::user()->role !== 'admin') {
+        if (!Auth::check()) {
             return redirect()->route('login');
         }
         $id = $request->id;
