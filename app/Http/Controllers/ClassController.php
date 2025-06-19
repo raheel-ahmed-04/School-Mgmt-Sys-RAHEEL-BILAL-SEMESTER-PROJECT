@@ -15,7 +15,7 @@ class ClassController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login');
         }
-        $classes = Classname::with(['teacher', 'students'])->get();
+        $classes = Classname::all();
         $teachers = Teacher::all();
         return view('admin.class', compact('classes', 'teachers'));
     }

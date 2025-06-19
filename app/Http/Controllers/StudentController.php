@@ -15,7 +15,7 @@ class StudentController extends Controller
             return redirect()->route('login');
         }
 
-        $students = Student::with('class')->get();
+        $students = Student::all();
         $classes = Classname::all();
         return view('admin.student', compact('students', 'classes'));
     }

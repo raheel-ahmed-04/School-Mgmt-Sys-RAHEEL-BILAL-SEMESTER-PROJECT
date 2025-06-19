@@ -14,7 +14,7 @@ class TeacherController extends Controller
             return redirect()->route('login');
         }
 
-        $teachers = Teacher::with('classes')->get();
+        $teachers = Teacher::all();
         return view('admin.teacher', compact('teachers'));
     }
 
