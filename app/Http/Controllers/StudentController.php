@@ -25,15 +25,13 @@ class StudentController extends Controller
         if (!Auth::check() || Auth::user()->role !== 'admin') {
             return redirect()->route('login');
         }
-
         $request->validate([
             'name' => 'required',
-            'roll_number' => 'required|unique:students',
+            'roll_number' => 'required',
             'class_id' => 'required',
-            'date_of_birth' => 'required|date',
+            'date_of_birth' => 'required',
             'parent_contact' => 'required'
         ]);
-
         $student = new Student();
         $student->name = $request->name;
         $student->roll_number = $request->roll_number;
@@ -41,7 +39,6 @@ class StudentController extends Controller
         $student->date_of_birth = $request->date_of_birth;
         $student->parent_contact = $request->parent_contact;
         $student->save();
-
         return redirect()->back()->with('success', 'Student added successfully');
     }
 
@@ -51,21 +48,25 @@ class StudentController extends Controller
             return redirect()->route('login');
         }
         $request->validate([
-            'id' => 'required|exists:students,id',
+            'id' => 'required',
             'name' => 'required',
-            'roll_number' => 'required|unique:students,roll_number,' . $request->id,
-            'class_id' => 'required|exists:classnames,id',
-            'date_of_birth' => 'required|date',
+            'roll_number' => 'required',
+            'class_id' => 'required',
+            'date_of_birth' => 'required',
             'parent_contact' => 'required'
         ]);
-        $student = Student::findOrFail($request->id);
-        $student->name = $request->name;
-        $student->roll_number = $request->roll_number;
-        $student->class_id = $request->class_id;
-        $student->date_of_birth = $request->date_of_birth;
-        $student->parent_contact = $request->parent_contact;
-        $student->save();
-        return redirect()->route('admin.student')->with('success', 'Student updated successfully');
+        $student = Student::find($request->id);
+        if ($student) {
+            $student->name = $request->name;
+            $student->roll_number = $request->roll_number;
+            $student->class_id = $request->class_id;
+            $student->date_of_birth = $request->date_of_birth;
+            $student->parent_contact = $request->parent_contact;
+            $student->save();
+            return redirect()->route('admin.student')->with('success', 'Student updated successfully');
+        } else {
+            return redirect()->route('admin.student')->with('error', 'Student not found');
+        }
     }
 
     public function destroy(Request $request)
@@ -73,10 +74,13 @@ class StudentController extends Controller
         if (!Auth::check() || Auth::user()->role !== 'admin') {
             return redirect()->route('login');
         }
-        $request->validate(['id' => 'required|exists:students,id']);
-        $student = Student::findOrFail($request->id);
-        $student->delete();
-        return redirect()->back()->with('success', 'Student deleted successfully');
+        $student = Student::find($request->id);
+        if ($student) {
+            $student->delete();
+            return redirect()->back()->with('success', 'Student deleted successfully');
+        } else {
+            return redirect()->route('admin.student')->with('error', 'Student not found');
+        }
     }
 
     public function edit(Request $request)
@@ -85,8 +89,12 @@ class StudentController extends Controller
             return redirect()->route('login');
         }
         $id = $request->id;
-        $student = Student::findOrFail($id);
+        $student = Student::find($id);
         $classes = Classname::all();
-        return view('admin.student_edit', compact('student', 'classes'));
+        if ($student) {
+            return view('admin.student_edit', compact('student', 'classes'));
+        } else {
+            return redirect()->route('admin.student')->with('error', 'Student not found');
+        }
     }
 }

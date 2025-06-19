@@ -23,21 +23,18 @@ class TeacherController extends Controller
         if (!Auth::check() || Auth::user()->role !== 'admin') {
             return redirect()->route('login');
         }
-
         $request->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:teachers',
+            'email' => 'required|unique:teachers,email',
             'expertise' => 'required',
             'contact_number' => 'required'
         ]);
-
         $teacher = new Teacher();
         $teacher->name = $request->name;
         $teacher->email = $request->email;
         $teacher->subject_expertise = $request->expertise;
         $teacher->contact_number = $request->contact_number;
         $teacher->save();
-
         return redirect()->back()->with('success', 'Teacher added successfully');
     }
 
@@ -47,19 +44,23 @@ class TeacherController extends Controller
             return redirect()->route('login');
         }
         $request->validate([
-            'id' => 'required|exists:teachers,id',
+            'id' => 'required',
             'name' => 'required',
-            'email' => 'required|email|unique:teachers,email,' . $request->id,
+            'email' => 'required',
             'expertise' => 'required',
             'contact_number' => 'required'
         ]);
-        $teacher = Teacher::findOrFail($request->id);
-        $teacher->name = $request->name;
-        $teacher->email = $request->email;
-        $teacher->subject_expertise = $request->expertise;
-        $teacher->contact_number = $request->contact_number;
-        $teacher->save();
-        return redirect()->route('admin.teacher')->with('success', 'Teacher updated successfully');
+        $teacher = Teacher::find($request->id);
+        if ($teacher) {
+            $teacher->name = $request->name;
+            $teacher->email = $request->email;
+            $teacher->subject_expertise = $request->expertise;
+            $teacher->contact_number = $request->contact_number;
+            $teacher->save();
+            return redirect()->route('admin.teacher')->with('success', 'Teacher updated successfully');
+        } else {
+            return redirect()->route('admin.teacher')->with('error', 'Teacher not found');
+        }
     }
 
     public function destroy(Request $request)
@@ -67,13 +68,16 @@ class TeacherController extends Controller
         if (!Auth::check() || Auth::user()->role !== 'admin') {
             return redirect()->route('login');
         }
-        $request->validate(['id' => 'required|exists:teachers,id']);
-        $teacher = Teacher::findOrFail($request->id);
-        if ($teacher->classes()->count() > 0) {
-            return redirect()->back()->with('error', 'Cannot delete teacher with assigned classes');
+        $teacher = Teacher::find($request->id);
+        if ($teacher) {
+            if ($teacher->classes()->count() > 0) {
+                return redirect()->back()->with('error', 'Cannot delete teacher with assigned classes');
+            }
+            $teacher->delete();
+            return redirect()->back()->with('success', 'Teacher deleted successfully');
+        } else {
+            return redirect()->route('admin.teacher')->with('error', 'Teacher not found');
         }
-        $teacher->delete();
-        return redirect()->back()->with('success', 'Teacher deleted successfully');
     }
 
     public function edit(Request $request)
@@ -82,7 +86,11 @@ class TeacherController extends Controller
             return redirect()->route('login');
         }
         $id = $request->id;
-        $teacher = Teacher::findOrFail($id);
-        return view('admin.teacher_edit', compact('teacher'));
+        $teacher = Teacher::find($id);
+        if ($teacher) {
+            return view('admin.teacher_edit', compact('teacher'));
+        } else {
+            return redirect()->route('admin.teacher')->with('error', 'Teacher not found');
+        }
     }
 }

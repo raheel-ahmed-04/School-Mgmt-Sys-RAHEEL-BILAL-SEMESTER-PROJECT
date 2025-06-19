@@ -26,8 +26,7 @@ class ClassController extends Controller
             return redirect()->route('login');
         }
         $request->validate([
-            'name' => 'required|unique:classnames',
-            'teacher_id' => 'nullable|exists:teachers,id',
+            'name' => 'required',
         ]);
         $class = new Classname();
         $class->name = $request->name;
@@ -41,16 +40,15 @@ class ClassController extends Controller
         if (!Auth::check() || Auth::user()->role !== 'admin') {
             return redirect()->route('login');
         }
-        $request->validate([
-            'id' => 'required|exists:classnames,id',
-            'name' => 'required|unique:classnames,name,' . $request->id,
-            'teacher_id' => 'nullable|exists:teachers,id',
-        ]);
-        $class = Classname::findOrFail($request->id);
-        $class->name = $request->name;
-        $class->teacher_id = $request->teacher_id;
-        $class->save();
-        return redirect()->route('admin.class')->with('success', 'Class updated successfully');
+        $class = Classname::find($request->id);
+        if ($class) {
+            $class->name = $request->name;
+            $class->teacher_id = $request->teacher_id;
+            $class->save();
+            return redirect()->route('admin.class')->with('success', 'Class updated successfully');
+        } else {
+            return redirect()->route('admin.class')->with('error', 'Class not found');
+        }
     }
 
     public function destroy(Request $request)
@@ -58,12 +56,13 @@ class ClassController extends Controller
         if (!Auth::check() || Auth::user()->role !== 'admin') {
             return redirect()->route('login');
         }
-        $request->validate(['id' => 'required|exists:classnames,id']);
-        $class = Classname::findOrFail($request->id);
-        // Optionally, unassign students from this class
-        \App\Models\Student::where('class_id', $request->id)->update(['class_id' => null]);
-        $class->delete();
-        return redirect()->back()->with('success', 'Class deleted successfully');
+        $class = Classname::find($request->id);
+        if ($class) {
+            $class->delete();
+            return redirect()->back()->with('success', 'Class deleted successfully');
+        } else {
+            return redirect()->route('admin.class')->with('error', 'Class not found');
+        }
     }
 
     public function assignStudent(Request $request, $class_id)
@@ -72,12 +71,16 @@ class ClassController extends Controller
             return redirect()->route('login');
         }
         $request->validate([
-            'student_id' => 'required|exists:students,id',
+            'student_id' => 'required',
         ]);
-        $student = Student::findOrFail($request->student_id);
-        $student->class_id = $class_id;
-        $student->save();
-        return redirect()->back()->with('success', 'Student assigned to class');
+        $student = Student::find($request->student_id);
+        if ($student) {
+            $student->class_id = $class_id;
+            $student->save();
+            return redirect()->back()->with('success', 'Student assigned to class');
+        } else {
+            return redirect()->back()->with('error', 'Student not found');
+        }
     }
 
     public function edit(Request $request)
@@ -86,8 +89,12 @@ class ClassController extends Controller
             return redirect()->route('login');
         }
         $id = $request->id;
-        $class = Classname::findOrFail($id);
+        $class = Classname::find($id);
         $teachers = Teacher::all();
-        return view('admin.class_edit', compact('class', 'teachers'));
+        if ($class) {
+            return view('admin.class_edit', compact('class', 'teachers'));
+        } else {
+            return redirect()->route('admin.class')->with('error', 'Class not found');
+        }
     }
 }

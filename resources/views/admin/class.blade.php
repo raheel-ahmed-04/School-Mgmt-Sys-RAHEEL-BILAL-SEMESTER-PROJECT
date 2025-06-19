@@ -12,7 +12,7 @@
             form { margin-bottom: 32px; }
             label { display: block; margin-bottom: 6px; color: #333; font-weight: 500; }
             input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 16px; font-size: 15px; }
-            .edit-link, .delete-btn {
+            button, .edit-link, .delete-btn {
                 border: none;
                 padding: 6px 18px;
                 border-radius: 4px;
@@ -36,8 +36,22 @@
             .delete-btn:hover {
                 background: #b71c1c;
             }
-            button{ background: linear-gradient(90deg, #FFC107, #4CAF50); color: #fff; border: none; padding: 10px 24px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: background 0.2s; text-decoration: none; display: inline-block; }
-            button:hover { background: linear-gradient(90deg, #4CAF50, #FFC107); }
+            .alert-success {
+                background: #e6ffed;
+                color: #256029;
+                padding: 12px 20px;
+                border-radius: 6px;
+                margin-bottom: 20px;
+                border: 1px solid #b7ebc6;
+            }
+            .alert-error {
+                background: #ffeaea;
+                color: #b71c1c;
+                padding: 12px 20px;
+                border-radius: 6px;
+                margin-bottom: 20px;
+                border: 1px solid #f5c2c7;
+            }
             table { width: 100%; border-collapse: collapse; margin-top: 24px; background: #fff; }
             th, td { padding: 12px 10px; border-bottom: 1px solid #eee; text-align: left; }
             th { background: #f1f1f1; color: #333; }
@@ -53,8 +67,13 @@
     </div>
     <h2>Class Management</h2>
     @if(session('success'))
-    <div style="background:#e6ffed;color:#256029;padding:12px 20px;border-radius:6px;margin-bottom:20px;border:1px solid #b7ebc6;">
+    <div class="alert-success">
         {{ session('success') }}
+    </div>
+    @endif
+    @if(session('error'))
+    <div class="alert-error">
+        {{ session('error') }}
     </div>
     @endif
     <form method="POST" action="{{ route('class.store') }}">
