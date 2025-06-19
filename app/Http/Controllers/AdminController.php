@@ -59,9 +59,9 @@ class AdminController extends Controller
 
     public function register(Request $request)
     {
-        // if (!Auth::check()) {
-        //     return redirect()->route('login');
-        // }
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users',
