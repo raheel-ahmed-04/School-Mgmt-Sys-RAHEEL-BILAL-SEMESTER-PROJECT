@@ -89,22 +89,27 @@
 
     <!-- Features Section -->
     <div id="features" class="features-section">
-        <h2 class="features-heading">Our Features</h2>
+        <h2 class="features-heading">Core Features</h2>
         <div class="features">
             <div class="feature-card">
                 <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Students Icon">
                 <h3>Student Management</h3>
-                <p>Track student attendance, grades, and performance effortlessly.</p>
+                <p>Add, edit, and remove students. View all student records and assign them to classes.</p>
             </div>
             <div class="feature-card">
                 <img src="https://cdn-icons-png.flaticon.com/512/1077/1077012.png" alt="Teachers Icon">
                 <h3>Teacher Management</h3>
-                <p>Organize teacher schedules and track subject assignments efficiently.</p>
+                <p>Manage teacher profiles, assign each teacher to a class, and update their information.</p>
             </div>
             <div class="feature-card">
                 <img src="https://cdn-icons-png.flaticon.com/512/1387/1387339.png" alt="Classes Icon">
-                <h3>Class Scheduling</h3>
-                <p>Plan classes, timetables, and resources seamlessly.</p>
+                <h3>Class Management</h3>
+                <p>Create, edit, and delete classes. Assign a single teacher to each class and manage class rosters.</p>
+            </div>
+            <div class="feature-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Admin Icon">
+                <h3>Admin-Only Access</h3>
+                <p>All management features are protected and accessible only to authenticated admin users.</p>
             </div>
         </div>
     </div>
