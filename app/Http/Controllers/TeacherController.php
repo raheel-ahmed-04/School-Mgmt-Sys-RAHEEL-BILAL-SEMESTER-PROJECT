@@ -27,7 +27,7 @@ class TeacherController extends Controller
             'name' => 'required',
             'email' => 'required|unique:teachers,email',
             'expertise' => 'required',
-            'contact_number' => 'required'
+            'contact_number' => 'required|digits:11'
         ]);
         $teacher = new Teacher();
         $teacher->name = $request->name;
@@ -48,7 +48,7 @@ class TeacherController extends Controller
             'name' => 'required',
             'email' => 'required',
             'expertise' => 'required',
-            'contact_number' => 'required'
+            'contact_number' => 'required|digits:11'
         ]);
         $teacher = Teacher::find($request->id);
         if ($teacher) {

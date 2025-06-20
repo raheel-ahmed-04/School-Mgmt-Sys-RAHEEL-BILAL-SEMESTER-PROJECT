@@ -29,8 +29,8 @@ class StudentController extends Controller
             'name' => 'required',
             'roll_number' => 'required',
             'class_id' => 'required',
-            'date_of_birth' => 'required',
-            'parent_contact' => 'required'
+            'date_of_birth' => 'required|date|before:today',
+            'parent_contact' => 'required|digits:11'
         ]);
         $student = new Student();
         $student->name = $request->name;
@@ -52,7 +52,7 @@ class StudentController extends Controller
             'name' => 'required',
             'roll_number' => 'required',
             'class_id' => 'required',
-            'date_of_birth' => 'required',
+            'date_of_birth' => 'required|date',
             'parent_contact' => 'required'
         ]);
         $student = Student::find($request->id);

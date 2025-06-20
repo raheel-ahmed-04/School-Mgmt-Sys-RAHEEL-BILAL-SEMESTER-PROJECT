@@ -54,17 +54,17 @@ class AdminController extends Controller
 
     public function showRegister()
     {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
         return view('auth.register');
     }
 
     public function register(Request $request)
     {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
         $request->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
         ]);
         $user = new User();
