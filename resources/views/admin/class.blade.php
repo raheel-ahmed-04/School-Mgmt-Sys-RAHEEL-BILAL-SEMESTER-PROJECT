@@ -58,12 +58,22 @@
             tr:last-child td { border-bottom: none; }
             .badge { display: inline-block; background: #FFC107; color: #333; border-radius: 12px; padding: 2px 10px; font-size: 13px; margin: 2px 2px 2px 0; }
             .actions form { display: inline; }
+            .back-dashboard {
+                background: #4CAF50;
+                color: #fff;
+                padding: 10px 22px;
+                border-radius: 6px;
+                text-decoration: none;
+                font-weight: 500;
+                box-shadow: 0 2px 8px rgba(76,175,80,0.08);
+                transition: background 0.2s;
+            }
         </style>
 </head>
 <body>
 <div class="container">
     <div style="margin-bottom: 24px;">
-        <a href="{{ route('admin.dashboard') }}" style="background:#4CAF50;color:#fff;padding:10px 22px;border-radius:6px;text-decoration:none;font-weight:500;box-shadow:0 2px 8px rgba(76,175,80,0.08);transition:background 0.2s;">&larr; Back to Dashboard</a>
+        <a href="{{ route('admin.dashboard') }}" class="back-dashboard">&larr; Back to Dashboard</a>
     </div>
     <h2>Class Management</h2>
     @if(session('success'))

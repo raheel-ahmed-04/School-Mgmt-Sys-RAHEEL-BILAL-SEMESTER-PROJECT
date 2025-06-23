@@ -13,7 +13,9 @@
             label { display: block; margin-bottom: 6px; color: #333; font-weight: 500; }
             input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 16px; font-size: 15px; }
             button, .edit-link, .delete-btn {
+                background: linear-gradient(90deg, #FFC107, #4CAF50);
                 border: none;
+                color: white;
                 padding: 6px 18px;
                 border-radius: 4px;
                 font-size: 13px;
@@ -57,12 +59,22 @@
             th { background: #f1f1f1; color: #333; }
             tr:last-child td { border-bottom: none; }
             .actions form { display: inline; }
+            .back-dashboard {
+                background: #4CAF50;
+                color: #fff;
+                padding: 10px 22px;
+                border-radius: 6px;
+                text-decoration: none;
+                font-weight: 500;
+                box-shadow: 0 2px 8px rgba(76,175,80,0.08);
+                transition: background 0.2s;
+            }
         </style>
 </head>
 <body>
 <div class="container">
     <div style="margin-bottom: 24px;">
-        <a href="{{ route('admin.dashboard') }}" style="background:#4CAF50;color:#fff;padding:10px 22px;border-radius:6px;text-decoration:none;font-weight:500;box-shadow:0 2px 8px rgba(76,175,80,0.08);transition:background 0.2s;">&larr; Back to Dashboard</a>
+        <a href="{{ route('admin.dashboard') }}" class="back-dashboard">&larr; Back to Dashboard</a>
     </div>
     <h2>Teacher Management</h2>
     @if(session('success'))
