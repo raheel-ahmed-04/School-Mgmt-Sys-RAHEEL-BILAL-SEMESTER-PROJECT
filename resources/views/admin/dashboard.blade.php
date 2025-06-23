@@ -8,25 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="{{ asset('school/css/admindashboard.css') }}" rel="stylesheet">
     <style>
-        ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-        ul li {
-            background-color: #f8f9fa;
-            margin-bottom: 8px;
-            padding: 12px;
-            border-radius: 8px;
-            transition: background-color 0.3s;
-        }
-        ul li:hover {
-            background-color: #e8f5e9;
-        }
-        .icon {
-            margin-right: 8px;
-            font-size: 1.2rem;
-            color: #388e3c;
-        }
+        
         .btn-register {
             background: #1976d2;
             color: #fff;
@@ -72,52 +54,25 @@
                 <div class="card text-center" style="flex:1;background:#f8f9fa;border-radius:10px;box-shadow:0 2px 8px rgba(76,175,80,0.08);padding:24px;border-left:5px solid #4CAF50;margin-bottom:0;">
                     <div class="card-body">
                         <h5 class="card-title" style="color:#388e3c;">Total Students</h5>
-                        <p class="card-text display-4" style="font-size:2.2rem;font-weight:bold;">{{ $data['total_students'] }}</p>
+                        <p class="card-text display-4" style="font-size:2.2rem;font-weight:bold;">{{ $total_students }}</p>
                         <a href="{{ route('admin.student') }}" class="btn btn-primary" style="background:#4CAF50;color:#fff;border:none;padding:8px 18px;border-radius:4px;text-decoration:none;font-weight:500;transition:background 0.2s;">Manage Students</a>
                     </div>
                 </div>
                 <div class="card text-center" style="flex:1;background:#f8f9fa;border-radius:10px;box-shadow:0 2px 8px rgba(76,175,80,0.08);padding:24px;border-left:5px solid #4CAF50;margin-bottom:0;">
                     <div class="card-body">
                         <h5 class="card-title" style="color:#388e3c;">Total Teachers</h5>
-                        <p class="card-text display-4" style="font-size:2.2rem;font-weight:bold;">{{ $data['total_teachers'] }}</p>
+                        <p class="card-text display-4" style="font-size:2.2rem;font-weight:bold;">{{ $total_teachers }}</p>
                         <a href="{{ route('admin.teacher') }}" class="btn btn-primary" style="background:#4CAF50;color:#fff;border:none;padding:8px 18px;border-radius:4px;text-decoration:none;font-weight:500;transition:background 0.2s;">Manage Teachers</a>
                     </div>
                 </div>
                 <div class="card text-center" style="flex:1;background:#f8f9fa;border-radius:10px;box-shadow:0 2px 8px rgba(76,175,80,0.08);padding:24px;border-left:5px solid #4CAF50;margin-bottom:0;">
                     <div class="card-body">
                         <h5 class="card-title" style="color:#388e3c;">Total Classes</h5>
-                        <p class="card-text display-4" style="font-size:2.2rem;font-weight:bold;">{{ $data['total_classes'] }}</p>
+                        <p class="card-text display-4" style="font-size:2.2rem;font-weight:bold;">{{ $total_classes }}</p>
                         <a href="{{ route('admin.class') }}" class="btn btn-primary" style="background:#4CAF50;color:#fff;border:none;padding:8px 18px;border-radius:4px;text-decoration:none;font-weight:500;transition:background 0.2s;">Manage Classes</a>
                     </div>
                 </div>
             </div>
-            <h4 style="color:#4CAF50;margin-top:32px;">Recent Students</h4>
-            <ul>
-                @foreach($data['recent_students'] as $student)
-                    <li>
-                        <span class="icon">👨‍🎓</span>
-                        {{ $student->name }} ({{ $student->roll_number }})
-                    </li>
-                @endforeach
-            </ul>
-            <h4 style="color:#4CAF50;">Recent Teachers</h4>
-            <ul>
-                @foreach($data['recent_teachers'] as $teacher)
-                    <li>
-                        <span class="icon">👩‍🏫</span>
-                        {{ $teacher->name }} ({{ $teacher->email }})
-                    </li>
-                @endforeach
-            </ul>
-            <h4 style="color:#4CAF50;">Recent Classes</h4>
-            <ul>
-                @foreach($data['recent_classes'] as $class)
-                    <li>
-                        <span class="icon">📚</span>
-                        {{ $class->name }}
-                    </li>
-                @endforeach
-            </ul>
         </div>
     </main>
 

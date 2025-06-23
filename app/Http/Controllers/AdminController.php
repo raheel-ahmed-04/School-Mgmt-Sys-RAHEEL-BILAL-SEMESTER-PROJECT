@@ -18,16 +18,11 @@ class AdminController extends Controller
             return redirect()->route('login');
         }
 
-        $data = [
-            'total_students' => Student::count(),
-            'total_teachers' => Teacher::count(),
-            'total_classes' => Classname::count(),
-            'recent_students' => Student::latest()->take(3)->get(),
-            'recent_teachers' => Teacher::latest()->take(3)->get(),
-            'recent_classes' => Classname::latest()->take(3)->get(),
-        ];
+        $total_students = Student::count();
+        $total_teachers = Teacher::count();
+        $total_classes = Classname::count();
 
-        return view('admin.dashboard', compact('data'));
+        return view('admin.dashboard', compact('total_students', 'total_teachers', 'total_classes'));
     }
 
     public function showLogin()

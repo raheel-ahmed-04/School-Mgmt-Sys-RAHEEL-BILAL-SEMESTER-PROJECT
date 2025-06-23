@@ -18,6 +18,19 @@
             margin-bottom: 50px;
             color: #333;
         }
+        .login-btn {
+            background-color: #FFC107;
+            color: #333;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-left: 10px;
+            transition: background 0.3s;
+        }
+        .login-btn:hover {
+            background-color: #FFD54F;
+        }
         .contact-section {
             padding: 80px 0;
             background-color: #fff;
@@ -61,21 +74,10 @@
             <a href="#features">Features</a>
             <a href="{{ route('about') }}">About</a>
             <a href="#contact">Contact</a>
-            @if (Route::has('login'))
-                @auth
-                    @if (Auth::user()->role === 'admin')
-                        <a href="{{ url('/admin/dashboard') }}">Admin Dashboard</a>
-                    @else
-                        <a href="{{ url('/teacher/dashboard') }}">Dashboard</a>
-                    @endif
-                @else
-                    <a href="{{ route('login') }}" 
-                       style="background-color: #FFC107; color: #333; padding: 10px 20px; text-decoration: none; border-radius: 20px; font-weight: bold; margin-left: 10px; transition: all 0.3s ease;"
-                       onmouseover="this.style.backgroundColor='#FFD54F';" 
-                       onmouseout="this.style.backgroundColor='#FFC107';">
-                       Login
-                    </a>
-                @endauth
+            @if (Auth::check())
+                <a href="{{ url('/admin/dashboard') }}">Admin Dashboard</a>
+            @else
+                <a href="{{ route('login') }}" class="login-btn">Login</a>
             @endif
         </nav>
     </header>
