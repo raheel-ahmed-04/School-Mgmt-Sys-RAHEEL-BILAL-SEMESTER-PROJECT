@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="{{ asset('school/css/home.css') }}" rel="stylesheet">
     <style>
-        /* About page specific styles */
         .about-container {
             max-width: 1200px;
             margin: 40px auto;
@@ -131,34 +130,14 @@
     <header>
         <h1>School Management System</h1>
         <nav>
-            <a href="{{ url('/') }}">Home</a>
-            <a href="{{ url('/#features') }}">Features</a>
+            <a href="#">Home</a>
+            <a href="#features">Features</a>
             <a href="{{ route('about') }}">About</a>
-            <a href="{{ url('/#contact') }}">Contact</a>
-            @if (Route::has('login'))
-                @auth
-                    @if (Auth::user()->role === 'admin')
-                        <a href="{{ url('/admin/dashboard') }}">Admin Dashboard</a>
-                    @else
-                        <a href="{{ url('/teacher/dashboard') }}">Dashboard</a>
-                    @endif
-                @else
-                    <a href="{{ route('login') }}" 
-                       style="background-color: #FFC107; color: #333; padding: 10px 20px; text-decoration: none; border-radius: 20px; font-weight: bold; margin-left: 10px; transition: all 0.3s ease;"
-                       onmouseover="this.style.backgroundColor='#FFD54F';" 
-                       onmouseout="this.style.backgroundColor='#FFC107';">
-                       Login
-                    </a>
-                    
-                    @if (Route::has('register'))
-                        <a href="{{ route('register') }}"
-                           style="background-color: #FFC107; color: #333; padding: 10px 20px; text-decoration: none; border-radius: 20px; font-weight: bold; margin-left: 10px; transition: all 0.3s ease;"
-                           onmouseover="this.style.backgroundColor='#FFD54F';" 
-                           onmouseout="this.style.backgroundColor='#FFC107';">
-                           Register
-                        </a>
-                    @endif
-                @endauth
+            <a href="#contact">Contact</a>
+            @if (Auth::check())
+                <a href="{{ url('/admin/dashboard') }}">Admin Dashboard</a>
+            @else
+                <a href="{{ route('login') }}" class="login-btn">Login</a>
             @endif
         </nav>
     </header>
