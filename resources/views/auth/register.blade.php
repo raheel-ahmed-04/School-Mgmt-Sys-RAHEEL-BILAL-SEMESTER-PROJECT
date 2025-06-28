@@ -149,13 +149,6 @@
                 <div class="error">{{ $errors->first('password') }}</div>
             @endif
 
-            <!-- Confirm Password -->
-            <label for="password_confirmation">Confirm Password</label>
-            <input id="password_confirmation" type="password" name="password_confirmation" required autocomplete="new-password">
-            @if ($errors->has('password_confirmation'))
-                <div class="error">{{ $errors->first('password_confirmation') }}</div>
-            @endif
-
             <!-- Register Button -->
             <button type="submit" class="button">Register</button>
 

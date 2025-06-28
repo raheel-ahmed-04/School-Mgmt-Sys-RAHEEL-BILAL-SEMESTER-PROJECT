@@ -107,6 +107,7 @@
                 <th>Email</th>
                 <th>Expertise</th>
                 <th>Contact Number</th>
+                <th>Class</th>
                 <th colspan="2">Actions</th>
             </tr>
         </thead>
@@ -117,6 +118,7 @@
                 <td>{{ $teacher->email }}</td>
                 <td>{{ $teacher->subject_expertise }}</td>
                 <td>{{ $teacher->contact_number }}</td>
+                <td>{{ $teacher->class ? $teacher->class->name : 'N/A' }}</td>
                 <td class="actions">
                     <form action="{{ route('teacher.edit') }}" method="POST" style="display:inline;">
                         @csrf
@@ -133,6 +135,7 @@
                 </td>
             </tr>
             @endforeach
+            <tr><td colspan="6" style="text-align:left;color:#aaa;">*(for Editing Assigned Classes visit: <a href="/admin/class">class management</a>)</td></tr>
             @if(count($teachers) == 0)
             <tr><td colspan="5" style="text-align:center;color:#aaa;">No teachers found.</td></tr>
             @endif
