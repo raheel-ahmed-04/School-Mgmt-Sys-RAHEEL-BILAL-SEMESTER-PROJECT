@@ -15,8 +15,6 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('subject_expertise');
             $table->string('contact_number');
-            $table->unsignedBigInteger('class_id')->unique()->nullable();
-            $table->foreign('class_id')->references('id')->on('classnames')->onDelete('set null');
             $table->timestamps();
         });
     }

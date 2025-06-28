@@ -48,7 +48,7 @@ class TeacherController extends Controller
             'name' => 'required',
             'email' => 'required',
             'expertise' => 'required',
-            'contact_number' => 'required|digits:11'
+            'contact_number' => 'required'
         ]);
         $teacher = Teacher::find($request->id);
         if ($teacher) {
@@ -70,9 +70,7 @@ class TeacherController extends Controller
         }
         $teacher = Teacher::find($request->id);
         if ($teacher) {
-            if ($teacher->classes()->count() > 0) {
-                return redirect()->back()->with('error', 'Cannot delete teacher with assigned classes');
-            }
+
             $teacher->delete();
             return redirect()->back()->with('success', 'Teacher deleted successfully');
         } else {

@@ -9,12 +9,12 @@ class Teacher extends Model
     protected $fillable = [
         'name',
         'email',
-        'expertise',
+        'subject_expertise', // changed from 'expertise' to match migration
         'contact_number',
     ];
 
     public function class()
     {
-        return $this->belongsTo(Classname::class);
+        return $this->hasOne(Classname::class, 'teacher_id');
     }
 }

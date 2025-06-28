@@ -27,7 +27,7 @@ class StudentController extends Controller
         }
         $request->validate([
             'name' => 'required',
-            'roll_number' => 'required',
+            'roll_number' => 'required|unique:students,roll_number',
             'class_id' => 'required',
             'date_of_birth' => 'required|date|before:today',
             'parent_contact' => 'required|digits:11'
