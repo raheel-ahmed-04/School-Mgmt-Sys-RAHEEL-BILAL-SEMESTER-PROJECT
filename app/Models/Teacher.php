@@ -9,7 +9,7 @@ class Teacher extends Model
     protected $fillable = [
         'name',
         'email',
-        'subject_expertise', // changed from 'expertise' to match migration
+        'subject_expertise', 
         'contact_number',
     ];
 

@@ -8,7 +8,7 @@ class Classname extends Model
 {
     protected $fillable = [
         'name',
-        'teacher_id', // add teacher_id to fillable
+        'teacher_id',
     ];
 
     public function teacher()
